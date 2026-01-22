@@ -16,7 +16,7 @@ export type Scene = {
 type Props = { scenes: Scene[] };
 
 export default function StickyStory({ scenes }: Props) {
-    const prefersReduced = useReducedMotion();
+    const prefersReduced = false;
     const [active, setActive] = useState(0);
     const refs = useRef<Array<HTMLElement | null>>([]);
     useEffect(() => {
@@ -35,13 +35,14 @@ export default function StickyStory({ scenes }: Props) {
 
     const fadeUp = useMemo(
         () => ({
-            initial: { opacity: 0, y: prefersReduced ? 0 : 20 },
+            initial: { opacity: 0, y: 20 },
             whileInView: { opacity: 1, y: 0 },
             transition: { duration: 0.45, ease: "easeOut" as const },
             viewport: { once: true, margin: "-10% 0px -10% 0px" },
         }),
-        [prefersReduced]
+        []
     );
+
 
     return (
         <div className="relative bg-transparent">
