@@ -14,7 +14,7 @@ import type { Scene } from "@/components/story/StickyStory";
 
 const SITE_NAME = "CPH Analytics";
 const SITE_DESCRIPTION =
-    "Real‑time pricing, tenders, sell‑out and shortage signals for Nordic pharma & medtech—explainable models and audit‑ready pipelines.";
+    "Pricing, tenders, sell‑out and shortage signals for Nordic life sciences—traceable, explainable, and built for regulated workflows.";
 
 export const metadata: Metadata = {
     title: SITE_NAME,
@@ -38,13 +38,23 @@ function HeroRightMapSkeleton() {
     );
 }
 
+/**
+ * IMPORTANT:
+ * This should be your marketing-first right panel:
+ * - no SWR
+ * - no /api calls
+ * - no "0 packs" / "— SKUs"
+ * - instead: coverage + capabilities + governance + CTA
+ */
 const HeroRightMap = dynamic(() => import("@/components/HeroRightMap"), {
-    // Static export builds run at build-time; if this component touches browser APIs,
-    // SSR can break the build. Keep it client-only.
     ssr: false,
     loading: () => <HeroRightMapSkeleton />,
 });
 
+/**
+ * StickyStory is a client component (uses IntersectionObserver etc.)
+ * Keep it client-only to avoid build-time issues in static export.
+ */
 const StickyStory = dynamic(() => import("@/components/story/StickyStory"), {
     ssr: false,
     loading: () => (
@@ -55,7 +65,7 @@ const StickyStory = dynamic(() => import("@/components/story/StickyStory"), {
 });
 
 /* -----------------------------------------------------------------------------
- * Data
+ * Content
  * --------------------------------------------------------------------------- */
 
 const scenes = [
@@ -64,7 +74,7 @@ const scenes = [
         kicker: "Launches & Returns",
         title: "Launch & return dynamics across chains",
         body:
-            "See launches, withdrawals, and back‑on‑market items as they appear across Nordic free‑pricing chains. Track adoption by country and chain, with ATC codes and pack (Vnr/EAN) context. Audit every observed price via a link to its source.",
+            "See launches, withdrawals, and back‑on‑market items as they appear across Nordic free‑pricing chains. Track adoption by country and chain, with ATC codes and pack (Vnr/EAN) context. Keep an audit trail via source‑linked observations.",
         media: {
             src: "/images/story/01-lead.jpg",
             alt: "Nordic chain adoption view with ATC tags highlighting new and back‑on‑market SKUs",
@@ -75,7 +85,7 @@ const scenes = [
         kicker: "Shortage Risk",
         title: "Shortage risk for the next period",
         body:
-            "Detect SKUs with a high likelihood of shortage next period—using availability patterns, abrupt price moves, launch/return signals, and pack updates. Scores are explainable and flagged at SKU–chain–country granularity.",
+            "Detect SKUs with a high likelihood of shortage next period—using availability patterns, abrupt price moves, and pack updates. Scores are explainable and flagged at SKU–chain–country granularity.",
         media: {
             src: "/images/story/02-shortage.jpg",
             alt: "Shortage early‑warning list with explainable risk scores and drivers",
@@ -86,7 +96,7 @@ const scenes = [
         kicker: "Price Signals",
         title: "Price shifts & supply tension",
         body:
-            "Surface rapid increases or decreases with last‑checked timestamps and chain coverage. Combine with shortage risk to separate scarcity from deliberate repositioning and to size expected elasticity by pack.",
+            "Surface changes with last‑checked timestamps and chain coverage. Combine with shortage risk to separate scarcity from deliberate repositioning and to size expected elasticity by pack.",
         media: {
             src: "/images/story/03-signal.jpg",
             alt: "Charts showing retail price deltas with supply‑tension indicators and last‑checked timestamps",
@@ -100,7 +110,7 @@ const scenes = [
             "Feed shortage probability and recent deltas into scenario models. For Denmark’s sealed‑bid A‑price, compare options by win probability, expected turnover, and margin—biasing the recommendation when shortage risk is elevated.",
         media: {
             src: "/images/story/04-models.jpg",
-            alt: "Scenario comparison: hold vs. increase with win probability and turnover curves for A‑price bids",
+            alt: "Scenario comparison with win probability and turnover curves for A‑price bids",
         },
     },
     {
@@ -108,7 +118,7 @@ const scenes = [
         kicker: "Measured Impact",
         title: "From signal to measured action",
         body:
-            "Ship a price or allocation change and watch the impact in a unified, daily‑refreshed sell‑out view—turnover, share, and A‑price effects—so your next cycle starts with evidence.",
+            "Ship a price or allocation change and track outcomes—turnover, share, and tender effects—so your next cycle starts with evidence, not guesswork.",
         media: {
             src: "/images/story/05-outcomes.jpg",
             alt: "Dashboard tracking KPI impact after pricing and availability changes at pack level",
@@ -116,29 +126,47 @@ const scenes = [
     },
 ] satisfies Scene[];
 
+const pillars = [
+    {
+        title: "Pricing visibility that stands up to scrutiny",
+        body:
+            "Source‑linked observations, last‑checked timestamps, and a clear trail from input to decision surface—designed for regulated teams.",
+    },
+    {
+        title: "Tender and scenario support (where applicable)",
+        body:
+            "Compare bid options with transparent assumptions and outputs you can share internally—so decisions are explainable and reproducible.",
+    },
+    {
+        title: "Shortage signals that your team can act on",
+        body:
+            "Early warnings with drivers and granularity aligned to how teams operate: SKU / pack / chain / country.",
+    },
+] as const;
+
 const services = [
     {
         title: "Market Access & Pricing",
         body:
-            "Model sealed‑bid A‑price scenarios, optimize tenders, and manage price corridors with explainable recommendations.",
+            "Model tender scenarios, manage price corridors, and support pricing cycles with explainable recommendations.",
         href: "/life-sciences/market-access-pricing",
     },
     {
         title: "Commercial Analytics",
         body:
-            "Brand performance, launch tracking, ATC trends, and KAM/HCP insights across Nordic free‑pricing chains.",
+            "Brand performance, launch tracking, and KAM-ready insights across Nordic free‑pricing chains.",
         href: "/life-sciences/commercial-analytics",
     },
     {
         title: "Supply & Shortages",
         body:
-            "Predict stock‑outs at SKU–pack level, monitor recalls & shortage signals, and drive proactive allocation.",
+            "Predict stock‑outs, monitor shortage signals, and drive proactive allocation with auditable rationale.",
         href: "/life-sciences/supply-shortages",
     },
     {
         title: "Evidence & Safety",
         body:
-            "AI‑assisted literature screening (PICO/PRISMA), RWE/HEOR support, and auditable reviews with rationale.",
+            "AI‑assisted screening (PICO/PRISMA), RWE/HEOR support, and auditable reviews with rationale.",
         href: "/life-sciences/evidence-safety",
     },
 ] as const;
@@ -148,7 +176,7 @@ const cases = [
         title: "A‑price tender simulator (Denmark)",
         summary:
             "Compared bid options by win probability, expected turnover, and margin using competitive price distributions.",
-        impact: "Higher win rates without unnecessary margin erosion.",
+        impact: "Better decisions without unnecessary margin erosion.",
         href: "/work/a-price-simulator",
         image: {
             src: "/images/work/a-price.jpg",
@@ -158,7 +186,7 @@ const cases = [
     {
         title: "Shortage early‑warning for distributor",
         summary:
-            "Near‑real‑time signals for shortages and returns across regions and vendors with SKU‑level explainability.",
+            "Signals for shortages and returns across regions and vendors with SKU‑level explainability.",
         impact: "Faster interventions and fewer stock‑outs.",
         href: "/work/shortage-early-warning",
         image: {
@@ -169,7 +197,7 @@ const cases = [
     {
         title: "Veterinary price intelligence (SE/NO)",
         summary:
-            "Continuous price checks across 10+ pharmacy chains with source‑level traceability and last‑checked timestamps.",
+            "Continuous price checks across pharmacy chains with traceability and last‑checked timestamps.",
         impact: "Clear pricing corridors and improved compliance across assortments.",
         href: "/work/vet-pricing-intelligence",
         image: {
@@ -180,21 +208,54 @@ const cases = [
 ] as const;
 
 /* -----------------------------------------------------------------------------
- * Page
+ * Styling helpers
  * --------------------------------------------------------------------------- */
 
 const heroGridStyle = {
     ["--hero-card-h" as any]: "clamp(520px,66vh,760px)",
 } as CSSProperties;
 
+function SectionHeader({
+                           title,
+                           subtitle,
+                           ctaHref,
+                           ctaText,
+                       }: {
+    title: string;
+    subtitle?: string;
+    ctaHref?: string;
+    ctaText?: string;
+}) {
+    return (
+        <div className="flex items-end justify-between gap-6">
+            <div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl">
+                    {title}
+                </h2>
+                {subtitle ? <p className="mt-2 max-w-2xl text-[var(--muted-text)]">{subtitle}</p> : null}
+            </div>
+
+            {ctaHref && ctaText ? (
+                <Link
+                    href={ctaHref}
+                    className="hidden text-[var(--accent-color)] underline decoration-[var(--accent-color)] underline-offset-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] sm:inline"
+                >
+                    {ctaText} →
+                </Link>
+            ) : null}
+        </div>
+    );
+}
+
+/* -----------------------------------------------------------------------------
+ * Page
+ * --------------------------------------------------------------------------- */
+
 export default function Home() {
     return (
         <>
             {/* HERO */}
-            <section
-                aria-labelledby="hero-heading"
-                className="relative isolate min-h-[88vh] overflow-hidden"
-            >
+            <section aria-labelledby="hero-heading" className="relative isolate min-h-[88vh] overflow-hidden">
                 <HeroVideo
                     poster="/video/lsp-hero-poster.webp"
                     sources={[
@@ -220,10 +281,7 @@ export default function Home() {
                         <div className="lg:col-span-7 xl:col-span-6 lg:min-h-[var(--hero-card-h)]">
                             <div className="relative flex h-full max-w-2xl flex-col rounded-2xl bg-white/5 p-5 sm:p-7 shadow-[0_12px_40px_rgba(0,0,0,0.25)] ring-1 ring-white/10 backdrop-blur-sm">
                                 <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white ring-1 ring-white/20">
-                  <span
-                      className="h-2 w-2 rounded-full bg-[var(--accent-color)]"
-                      aria-hidden
-                  />
+                                    <span className="h-2 w-2 rounded-full bg-[var(--accent-color)]" aria-hidden />
                                     <Link
                                         href="/life-sciences"
                                         className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)]"
@@ -240,10 +298,16 @@ export default function Home() {
                                 </h1>
 
                                 <p className="mt-5 max-w-prose text-base leading-7 text-white/85 sm:text-lg">
-                                    Real‑time pricing, tenders, sell‑out and shortage signals—built for
-                                    regulated markets. Explainable models with audit‑ready pipelines
-                                    from CPH Analytics.
+                                    Clear signals for pricing, tenders, and supply risk—delivered with traceability and explainability
+                                    that regulated teams can trust.
                                 </p>
+
+                                {/* Strong marketing bullets (no fake metrics) */}
+                                <ul className="mt-6 space-y-2 text-sm text-white/80">
+                                    <li>• Source‑linked observations and audit‑friendly exports</li>
+                                    <li>• Scenario support for pricing/tender decisions (where applicable)</li>
+                                    <li>• Shortage signals with explainable drivers</li>
+                                </ul>
 
                                 <div className="mt-7 flex flex-wrap items-center gap-4">
                                     <Link
@@ -253,33 +317,31 @@ export default function Home() {
                                         Book a demo
                                     </Link>
 
-                                    {/* For same-page anchors, prefer a normal <a> */}
                                     <a
                                         href="#lsp-story-heading"
                                         className="inline-flex items-center text-white/90 underline decoration-white/50 underline-offset-4 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)]"
                                     >
-                                        Explore the platform →
+                                        See the platform story →
                                     </a>
                                 </div>
 
                                 <div className="mt-auto pt-6">
                                     <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/75">
-                                        <li>Trusted across the Nordics</li>
+                                        <li>Nordic coverage</li>
                                         <li className="hidden sm:inline">•</li>
-                                        <li>5 markets • 12+ data pipelines</li>
+                                        <li>Traceable signals</li>
                                         <li className="hidden sm:inline">•</li>
                                         <li>ISO 27001 / GDPR‑ready</li>
                                     </ul>
                                 </div>
 
                                 <p className="sr-only">
-                                    Background shows an aerial of Copenhagen slowly zooming out,
-                                    signaling getting an overview.
+                                    Background shows an aerial of Copenhagen, signaling a high-level overview for decision-making.
                                 </p>
                             </div>
                         </div>
 
-                        {/* Right: map (client-only) */}
+                        {/* Right: marketing-first map panel (client-only) */}
                         <div className="relative mt-6 lg:col-span-5 xl:col-span-6 lg:mt-0 lg:min-h-[var(--hero-card-h)]">
                             <HeroRightMap initialCountry="DK" className="h-full w-full" />
                         </div>
@@ -305,64 +367,66 @@ export default function Home() {
                     />
                   </svg>
                 </span>
-                                <span className="sr-only">
-                  Scroll to see what’s inside Life Science Pro
-                </span>
+                                <span className="sr-only">Scroll to learn what’s inside the platform</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Benefits chips */}
-            <section
-                aria-labelledby="benefits-heading"
-                className="border-t border-[var(--border-color)]"
-            >
-                <h2 id="benefits-heading" className="sr-only">
-                    Key benefits
-                </h2>
-                <div className="mx-auto max-w-7xl px-6 py-10 sm:px-8">
-                    <ul className="grid grid-cols-1 gap-4 text-sm text-[var(--muted-text)] sm:grid-cols-2 md:grid-cols-4">
-                        {[
-                            "Daily‑refreshed Denmark sell‑out & price flags",
-                            "Auction simulator for Denmark’s sealed‑bid A‑price",
-                            "Veterinary price intelligence across 10+ chains (SE/NO)",
-                            "AI‑assisted literature screening with PICO‑style rationale",
-                        ].map((t) => (
-                            <li
-                                key={t}
-                                className="rounded-xl border border-[var(--border-color)] bg-[var(--surface)] p-4"
-                            >
-                                {t}
-                            </li>
+            {/* Pillars */}
+            <section aria-labelledby="pillars-heading" className="border-t border-[var(--border-color)]">
+                <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
+                    <SectionHeader
+                        title="Built for regulated life‑science teams"
+                        subtitle="A marketing homepage shouldn’t pretend to be a live dashboard. Instead: show coverage, capability, and why you’re credible."
+                    />
+                    <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+                        {pillars.map((p) => (
+                            <article key={p.title} className="rounded-xl border border-[var(--border-color)] bg-[var(--surface)] p-6">
+                                <h3 className="text-lg font-medium text-[var(--text-color)]">{p.title}</h3>
+                                <p className="mt-3 text-sm leading-6 text-[var(--muted-text)]">{p.body}</p>
+                            </article>
                         ))}
-                    </ul>
+                    </div>
+
+                    <div className="mt-10 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] p-6 sm:p-8">
+                        <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
+                            <div className="lg:col-span-8">
+                                <h3 className="text-xl font-semibold tracking-tight text-[var(--text-color)]">
+                                    Want a concrete walkthrough for your market?
+                                </h3>
+                                <p className="mt-2 text-[var(--muted-text)]">
+                                    We’ll show what’s covered, how signals are derived, and how traceability works end-to-end.
+                                </p>
+                            </div>
+                            <div className="lg:col-span-4 lg:text-right">
+                                <Link
+                                    href="/contact?topic=life-sciences"
+                                    className="inline-flex items-center rounded-md bg-[var(--primary-color)] px-5 py-3 font-medium text-white transition-colors hover:bg-[var(--secondary-color)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)]"
+                                >
+                                    Request a walkthrough
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             {/* LSP intro */}
-            <section
-                aria-labelledby="lsp-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="lsp-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
                     <div className="grid items-start gap-10 lg:grid-cols-12">
                         <div className="lg:col-span-7">
-                            <h2
-                                id="lsp-heading"
-                                className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl"
-                            >
+                            <h2 id="lsp-heading" className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl">
                                 Pharma insights with Life Science Pro
                             </h2>
                             <p className="mt-4 max-w-3xl text-[var(--muted-text)]">
-                                Track Nordic pharmaceutical moves—launches, withdrawals, returns,
-                                supply gaps, and retail price shifts—plus next‑period shortage
-                                risk—across free‑pricing chains for human and veterinary products.
-                                Sales data is available in Denmark.
+                                Track Nordic moves—launches, withdrawals, returns, supply gaps, and retail price shifts—plus next‑period
+                                shortage risk—across free‑pricing chains for human and veterinary products. Sales data is available in Denmark.
                             </p>
                             <p className="mt-6 text-sm text-[var(--muted-text)]">
-                                Below is a short story from Life Science Pro.
+                                Below is a short story showing how teams go from signals to actions.
                             </p>
                         </div>
 
@@ -384,15 +448,9 @@ export default function Home() {
             </section>
 
             {/* LSP story */}
-            <section
-                aria-labelledby="lsp-story-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="lsp-story-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 pt-12 sm:px-8">
-                    <h3
-                        id="lsp-story-heading"
-                        className="text-xl font-semibold tracking-tight text-[var(--text-color)] md:text-2xl"
-                    >
+                    <h3 id="lsp-story-heading" className="text-xl font-semibold tracking-tight text-[var(--text-color)] md:text-2xl">
                         Life Science Pro story
                     </h3>
                 </div>
@@ -400,45 +458,20 @@ export default function Home() {
             </section>
 
             {/* Services */}
-            <section
-                aria-labelledby="services-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="services-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
-                    <div className="flex items-end justify-between gap-6">
-                        <div>
-                            <h2
-                                id="services-heading"
-                                className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl"
-                            >
-                                Built for Life Sciences
-                            </h2>
-                            <p className="mt-2 max-w-2xl text-[var(--muted-text)]">
-                                Plug‑in services across market access, commercial, supply, and
-                                evidence—delivered with dependable engineering and explainable
-                                models.
-                            </p>
-                        </div>
-                        <Link
-                            href="/life-sciences"
-                            className="hidden text-[var(--accent-color)] underline decoration-[var(--accent-color)] underline-offset-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] sm:inline"
-                        >
-                            Explore life‑science services →
-                        </Link>
-                    </div>
+                    <SectionHeader
+                        title="Services for life sciences"
+                        subtitle="From market access to supply risk: pragmatic analytics, dependable engineering, and explainable models."
+                        ctaHref="/life-sciences"
+                        ctaText="Explore services"
+                    />
 
                     <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                         {services.map((s) => (
-                            <article
-                                key={s.title}
-                                className="rounded-xl border border-[var(--border-color)] bg-[var(--surface)] p-6"
-                            >
-                                <h3 className="text-lg font-medium text-[var(--text-color)]">
-                                    {s.title}
-                                </h3>
-                                <p className="mt-3 text-sm leading-6 text-[var(--muted-text)]">
-                                    {s.body}
-                                </p>
+                            <article key={s.title} className="rounded-xl border border-[var(--border-color)] bg-[var(--surface)] p-6">
+                                <h3 className="text-lg font-medium text-[var(--text-color)]">{s.title}</h3>
+                                <p className="mt-3 text-sm leading-6 text-[var(--muted-text)]">{s.body}</p>
                                 <div className="mt-4">
                                     <Link
                                         href={s.href}
@@ -454,24 +487,16 @@ export default function Home() {
             </section>
 
             {/* Compliance */}
-            <section
-                aria-labelledby="compliance-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="compliance-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
-                    <h2
-                        id="compliance-heading"
-                        className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl"
-                    >
-                        Validated for regulated environments
-                    </h2>
-                    <p className="mt-3 max-w-3xl text-[var(--muted-text)]">
-                        We operate with pharma‑grade controls: audit trails, role‑based access,
-                        data lineage, and model monitoring. Alignment with 21 CFR Part 11 / EU
-                        Annex 11 where applicable, plus GDPR and DPA compliance.
-                    </p>
+                    <SectionHeader
+                        title="Validated for regulated environments"
+                        subtitle="Audit trails, role‑based access, lineage, and monitoring—delivered with governance that fits life‑science workflows."
+                        ctaHref="/life-sciences/compliance"
+                        ctaText="Read compliance"
+                    />
 
-                    <ul className="mt-6 grid grid-cols-1 gap-3 text-sm text-[var(--muted-text)] sm:grid-cols-2 lg:grid-cols-3">
+                    <ul className="mt-10 grid grid-cols-1 gap-3 text-sm text-[var(--muted-text)] sm:grid-cols-2 lg:grid-cols-3">
                         {[
                             "GxP‑aware workflows & e‑record audit trails",
                             "Role‑based access, least privilege, and encryption in transit/at rest",
@@ -480,52 +505,23 @@ export default function Home() {
                             "Change control with environment‑based deployments",
                             "Validation documentation available on request",
                         ].map((item) => (
-                            <li
-                                key={item}
-                                className="rounded-lg border border-[var(--border-color)] bg-[var(--surface)] p-4"
-                            >
+                            <li key={item} className="rounded-lg border border-[var(--border-color)] bg-[var(--surface)] p-4">
                                 • {item}
                             </li>
                         ))}
                     </ul>
-
-                    <div className="mt-6">
-                        <Link
-                            href="/life-sciences/compliance"
-                            className="text-[var(--accent-color)] underline decoration-[var(--accent-color)] underline-offset-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)]"
-                        >
-                            Read our compliance overview →
-                        </Link>
-                    </div>
                 </div>
             </section>
 
             {/* Cases */}
-            <section
-                aria-labelledby="cases-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="cases-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
-                    <div className="flex items-end justify-between gap-6">
-                        <div>
-                            <h2
-                                id="cases-heading"
-                                className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl"
-                            >
-                                Selected life‑science work
-                            </h2>
-                            <p className="mt-2 max-w-2xl text-[var(--muted-text)]">
-                                Focused engagements across pharma manufacturers, distributors, and
-                                animal health.
-                            </p>
-                        </div>
-                        <Link
-                            href="/work"
-                            className="hidden text-[var(--accent-color)] underline decoration-[var(--accent-color)] underline-offset-4 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-color)] sm:inline"
-                        >
-                            View all →
-                        </Link>
-                    </div>
+                    <SectionHeader
+                        title="Selected work"
+                        subtitle="Focused engagements across manufacturers, distributors, and animal health."
+                        ctaHref="/work"
+                        ctaText="View all"
+                    />
 
                     <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
                         {cases.map((c, idx) => (
@@ -545,15 +541,9 @@ export default function Home() {
                                 </div>
 
                                 <div className="p-6">
-                                    <h3 className="text-lg font-medium text-[var(--text-color)]">
-                                        {c.title}
-                                    </h3>
-                                    <p className="mt-2 text-sm text-[var(--muted-text)]">
-                                        {c.summary}
-                                    </p>
-                                    <p className="mt-2 text-sm text-[var(--muted-text)]">
-                                        {c.impact}
-                                    </p>
+                                    <h3 className="text-lg font-medium text-[var(--text-color)]">{c.title}</h3>
+                                    <p className="mt-2 text-sm text-[var(--muted-text)]">{c.summary}</p>
+                                    <p className="mt-2 text-sm text-[var(--muted-text)]">{c.impact}</p>
                                     <div className="mt-4">
                                         <Link
                                             href={c.href}
@@ -570,25 +560,17 @@ export default function Home() {
             </section>
 
             {/* About */}
-            <section
-                aria-labelledby="about-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="about-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
                     <div className="grid items-center gap-10 lg:grid-cols-12">
                         <div className="lg:col-span-7">
-                            <h2
-                                id="about-heading"
-                                className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl"
-                            >
+                            <h2 id="about-heading" className="text-2xl font-semibold tracking-tight text-[var(--text-color)] md:text-3xl">
                                 About us
                             </h2>
 
                             <p className="mt-4 max-w-3xl text-[var(--muted-text)]">
-                                CPH Analytics is an independent analytics consultancy. We help
-                                life‑science teams move from raw data to confident decisions—
-                                combining pragmatic strategy with dependable engineering and applied
-                                AI.
+                                CPH Analytics is an independent analytics consultancy. We help life‑science teams move from raw data to
+                                confident decisions—combining pragmatic strategy with dependable engineering and applied AI.
                             </p>
 
                             <ul className="mt-6 grid grid-cols-1 gap-3 text-sm text-[var(--muted-text)] sm:grid-cols-2">
@@ -598,10 +580,7 @@ export default function Home() {
                                     "Robust data pipelines & decision surfaces",
                                     "Explainable models with monitoring",
                                 ].map((t) => (
-                                    <li
-                                        key={t}
-                                        className="rounded-lg border border-[var(--border-color)] bg-[var(--surface)] p-4"
-                                    >
+                                    <li key={t} className="rounded-lg border border-[var(--border-color)] bg-[var(--surface)] p-4">
                                         • {t}
                                     </li>
                                 ))}
@@ -630,12 +609,8 @@ export default function Home() {
                                     />
                                 </div>
                                 <figcaption className="px-5 py-4">
-                                    <div className="text-sm font-medium text-[var(--text-color)]">
-                                        David A. Seiler-Holm
-                                    </div>
-                                    <div className="text-sm text-[var(--muted-text)]">
-                                        Managing Partner
-                                    </div>
+                                    <div className="text-sm font-medium text-[var(--text-color)]">David A. Seiler-Holm</div>
+                                    <div className="text-sm text-[var(--muted-text)]">Managing Partner</div>
                                 </figcaption>
                             </figure>
                         </aside>
@@ -644,22 +619,16 @@ export default function Home() {
             </section>
 
             {/* Contact band */}
-            <section
-                aria-labelledby="contact-heading"
-                className="border-t border-[var(--border-color)]"
-            >
+            <section aria-labelledby="contact-heading" className="border-t border-[var(--border-color)]">
                 <div className="mx-auto max-w-7xl px-6 py-16 sm:px-8">
                     <div className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] p-8 text-center sm:p-10">
-                        <h2
-                            id="contact-heading"
-                            className="text-xl font-semibold tracking-tight text-[var(--text-color)] md:text-2xl"
-                        >
+                        <h2 id="contact-heading" className="text-xl font-semibold tracking-tight text-[var(--text-color)] md:text-2xl">
                             Ready to turn signals into outcomes?
                         </h2>
 
                         <p className="mt-3 text-[var(--muted-text)]">
-                            Speak with a senior consultant about your roadmap—pricing, tenders,
-                            shortages, and sell‑out analytics for life‑science teams.
+                            Speak with a senior consultant about your roadmap—pricing, tenders, shortages, and sell‑out analytics for
+                            life‑science teams.
                         </p>
 
                         <div className="mt-6 flex items-center justify-center gap-4">
